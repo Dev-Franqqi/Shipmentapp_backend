@@ -17,13 +17,13 @@ type loginRequest={
 
  const loginController = async (req:Request, res:Response) => {
     const { email, password } = req.body as unknown as loginRequest
-    try {
-        await User.login(email, password);
-        res.status(200).json({ email, password });
+     try {
+         await User.login(email, password);
+         res.status(200).json({ email, password });
 
-    }
-    catch (error:any) {
-        res.status(400).json({ error: error.message })
+     }
+     catch (error: any) {
+         res.status(400).json({ error: error.message })
     }
 }
 
