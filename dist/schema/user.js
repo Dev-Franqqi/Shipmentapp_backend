@@ -52,7 +52,7 @@ userSchema.statics.signup = function (firstname, lastname, email, password, coun
         }
         const salt = yield bcrypt.genSalt(10);
         const hash = yield bcrypt.hash(password, salt);
-        const user = yield this.create({ firstname, lastname, email, password, country });
+        const user = yield this.create({ firstname, lastname, email, password: hash, country });
         return user;
     });
 };
