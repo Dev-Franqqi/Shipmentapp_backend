@@ -1,7 +1,7 @@
 import { Schema,model} from "mongoose";
 const validator = require("validator")
 const bcrypt = require("bcrypt");
-interface IUSer {
+export interface IUSer {
     firstname: String,
     lastname: String,
     email: String,
