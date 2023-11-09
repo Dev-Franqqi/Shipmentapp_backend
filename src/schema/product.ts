@@ -175,7 +175,7 @@ ShipmentSchema.statics.createItem = async function (shipmentData: Shipdata) {
     
   }
   const trackingNumber = await generateTrackingNumber();
-  const shipment = {trackingNumber ,...shipmentData}
+  const shipment = {tracking_number :trackingNumber ,...shipmentData}
   const product = await this.create(shipment)
 
   return product
@@ -191,4 +191,4 @@ const ShipmentModel = mongoose.model(
 );
 
 
-module.exports = ShipmentModel;
+export default ShipmentModel;

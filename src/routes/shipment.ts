@@ -1,14 +1,10 @@
 import { Router } from "express";
-const {
-    getShipment,
-    createShipment
-} = require("../controllers/admin")
-
+import { getShipment,createShipment } from "../controllers/admin";
 
 const router  =Router()
 
-router.get("/:id", getShipment);
+router.get("/shipments/:id", getShipment);
 
-router.post("/create", createShipment);
+router.post("/shipment/create", createShipment);
 
 module.exports = router;

@@ -8,34 +8,35 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const Shipment = require("../schema/product");
+exports.createShipment = exports.getShipment = void 0;
+const product_1 = __importDefault(require("../schema/product"));
 const getShipment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // const { id } = req.param.id;
-    // try {
-    //     const shipment = await Shipment.findOne({ id })
-    //     if (!shipment) {
-    //         res.status(404).json({error:"Shipment not found"})
-    //     }
-    //     else {
-    //         res.status(200).json(shipment)
-    //     }
-    // }
-    // catch (error) {
-    //     res.status(400).json({error:error.message})
-    // }
-});
-const createShipment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const shipItem = req.body;
+    const { id } = req.params;
+    console.log(id);
     try {
-        const product = yield Shipment.createItem(shipItem);
+        const product = yield product_1.default.findOne({ tracking_number: id });
+        if (!product) {
+            res.status(404).json({ error: "There is no available shipment with that tracking number" });
+        }
         res.status(200).json(product);
     }
     catch (error) {
         res.status(400).json({ error: error.message });
     }
 });
-module.exports = {
-    getShipment,
-    createShipment
-};
+exports.getShipment = getShipment;
+const createShipment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const shipItem = req.body;
+    try {
+        const product = yield product_1.default.createItem(shipItem);
+        res.status(200).json(product);
+    }
+    catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+exports.createShipment = createShipment;

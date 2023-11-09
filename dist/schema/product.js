@@ -87,10 +87,10 @@ ShipmentSchema.statics.createItem = function (shipmentData) {
             throw new Error(`Please fill in remaining fields: ${StringFields}`);
         }
         const trackingNumber = yield generateTrackingNumber();
-        const shipment = Object.assign({ trackingNumber }, shipmentData);
+        const shipment = Object.assign({ tracking_number: trackingNumber }, shipmentData);
         const product = yield this.create(shipment);
         return product;
     });
 };
 const ShipmentModel = mongoose.model("Shipment", ShipmentSchema);
-module.exports = ShipmentModel;
+exports.default = ShipmentModel;
