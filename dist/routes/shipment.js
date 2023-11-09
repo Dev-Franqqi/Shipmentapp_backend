@@ -5,4 +5,6 @@ const admin_1 = require("../controllers/admin");
 const router = (0, express_1.Router)();
 router.get("/shipments/:id", admin_1.getShipment);
 router.post("/shipment/create", admin_1.createShipment);
+router.put("/shipment/location/:id", admin_1.updateShipmentLocation);
+router.put("/shipment/status/:id", admin_1.updateShipmentStatus);
 module.exports = router;

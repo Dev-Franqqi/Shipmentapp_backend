@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createShipment = exports.getShipment = void 0;
+exports.updateShipmentStatus = exports.updateShipmentLocation = exports.createShipment = exports.getShipment = void 0;
 const product_1 = __importDefault(require("../schema/product"));
 const getShipment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
@@ -40,3 +40,37 @@ const createShipment = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.createShipment = createShipment;
+const updateShipmentLocation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const current_location = req.body;
+    try {
+        const doc = yield product_1.default.findOneAndUpdate({ tracking_number: id }, { current_location: current_location }, {
+            new: true
+        });
+        if (!doc) {
+            res.status(404).json({ error: "Could not find document" });
+        }
+        res.status(200).json(doc);
+    }
+    catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+exports.updateShipmentLocation = updateShipmentLocation;
+const updateShipmentStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const status = req.body;
+    try {
+        const doc = yield product_1.default.findOneAndUpdate({ tracking_number: id }, status, {
+            new: true,
+        });
+        if (!doc) {
+            res.status(404).json({ error: "Could not find document" });
+        }
+        res.status(200).json(doc);
+    }
+    catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+exports.updateShipmentStatus = updateShipmentStatus;

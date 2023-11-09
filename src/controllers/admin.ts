@@ -4,6 +4,14 @@ import { Request } from "express";
 import { IShipment } from "../schema/product";
 import { Shipdata } from "../schema/product";
 
+interface Location{
+    
+    city: String;
+    state: String;
+    postal_code: String;
+    country: String;
+
+}
 export const getShipment = async (req: Request, res: Response) => {
     const { id } = req.params;
     console.log(id)
@@ -30,3 +38,45 @@ export const createShipment = async (req: Request, res: Response) => {
   }
 };
 
+export const updateShipmentLocation = async (req: Request, res: Response) => {
+    const { id } = req.params
+    const current_location  = req.body as unknown as Location
+    
+    try {
+        const doc = await ShipmentModel.findOneAndUpdate({ tracking_number: id }, { current_location: current_location }, {
+            new:true
+        })
+
+        if (!doc) {
+            res.status(404).json({error:"Could not find document"})
+        }
+        res.status(200).json(doc)
+    }
+    catch (error: any) {
+        res.status(400).json({error:error.message})
+    }
+
+}
+
+export const updateShipmentStatus = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const status = req.body as unknown as { status:string }
+     try {
+       const doc = await ShipmentModel.findOneAndUpdate(
+         { tracking_number: id },
+         status,
+         {
+           new: true,
+         }
+       );
+
+       if (!doc) {
+         res.status(404).json({ error: "Could not find document" });
+       }
+       res.status(200).json(doc);
+     } catch (error: any) {
+       res.status(400).json({ error: error.message });
+     }
+
+
+}
