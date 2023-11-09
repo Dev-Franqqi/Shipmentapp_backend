@@ -10,11 +10,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const User = require("../schema/user");
+const jwt = require("jsonwebtoken");
+const createToken = (_id) => {
+    jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
+    return;
+};
 const loginController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     try {
-        yield User.login(email, password);
-        res.status(200).json({ email, password });
+        const user = yield User.login(email, password);
+        const token = createToken(user._id);
+        res.status(200).json({ email, token });
     }
     catch (error) {
         res.status(400).json({ error: error.message });
@@ -23,8 +29,9 @@ const loginController = (req, res) => __awaiter(void 0, void 0, void 0, function
 const signupController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { firstname, lastname, email, password, country } = req.body;
     try {
-        yield User.signup(firstname, lastname, email, password, country);
-        res.status(200).json({ firstname, lastname, email, password, country });
+        const user = yield User.signup(firstname, lastname, email, password, country);
+        const token = createToken(user._id);
+        res.status(200).json({ email, token });
     }
     catch (error) {
         console.error("Error caught:", error.message); // Add this line for debugging

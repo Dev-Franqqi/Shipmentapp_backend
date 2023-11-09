@@ -1,5 +1,6 @@
 const User = require("../schema/user")
 import { Response } from "express"
+const jwt = require("jsonwebtoken")
 
 type SignUpRequest  ={
   firstname: string;
@@ -15,11 +16,16 @@ type loginRequest={
     password:string
 }
 
+const createToken = (_id:string) => {
+    jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" })
+    return
+}
  const loginController = async (req:Request, res:Response) => {
     const { email, password } = req.body as unknown as loginRequest
      try {
-         await User.login(email, password);
-         res.status(200).json({ email, password });
+         const user = await User.login(email, password);
+         const token = createToken(user._id)
+         res.status(200).json({ email, token});
 
      }
      catch (error: any) {
@@ -30,8 +36,9 @@ type loginRequest={
  const signupController = async (req:Request, res:Response) => {
     const {firstname,lastname,email,password,country} = req.body as unknown as SignUpRequest
     try {
-          await  User.signup(firstname, lastname, email, password, country)
-             res.status(200).json({ firstname, lastname, email, password, country });
+        const user = await User.signup(firstname, lastname, email, password, country)
+        const token = createToken(user._id)
+             res.status(200).json({ email,token });
 
     }   
     catch (error: any) {
