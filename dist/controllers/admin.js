@@ -20,6 +20,7 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const users = yield User.find();
         if (!users) {
             res.status(404).json({ error: "No users found" });
+            return;
         }
         res.status(200).json(users);
     }
@@ -34,6 +35,7 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const user = yield User.findOneAndDelete({ _id: id });
         if (!user) {
             res.status(404).json({ error: "User does not exist" });
+            return;
         }
         res.status(200).json({ message: "User Deleted" });
     }
@@ -49,6 +51,7 @@ const getShipment = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const product = yield product_1.default.findOne({ tracking_number: id });
         if (!product) {
             res.status(404).json({ error: "There is no available shipment with that tracking number" });
+            return;
         }
         res.status(200).json(product);
     }
